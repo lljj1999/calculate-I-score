@@ -1,0 +1,18 @@
+sc<-read.csv("D:/Desktop/sc.csv",header=T)#Read the number of positive cells
+h_index = function(cites) {
+  if(max(cites) == 0) return(0)
+  cites = cites[order(cites, decreasing = TRUE)]
+  tail(which(cites >= seq_along(cites)), 1)
+}
+Score<-NULL
+Iscore<-NULL
+set.seed(1234)
+for (col in 1:ncol(sc)){
+  num<-na.omit(sc[,col])
+  for (i in 1:100) {
+    boot_indices <- sample(num,22,replace = TRUE)
+    Score[i]<- h_index(boot_indices)
+  }
+  Iscore[col]<-round(mean(as.numeric(Score)),digits = 0)
+}
+Iscore
